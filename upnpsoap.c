@@ -793,10 +793,16 @@ callback(void *args, int argc, char **argv, char **azColName)
 		if( refID && (passed_args->filter & FILTER_REFID) ) {
 			ret = strcatf(str, " refID=\"%s\"", refID);
 		}
-		ret = strcatf(str, "&gt;"
-		                   "&lt;dc:title&gt;%s&lt;/dc:title&gt;"
-		                   "&lt;upnp:class&gt;object.%s&lt;/upnp:class&gt;",
-		                   title, class);
+        if ((passed_args->flags | FLAG_SAMSUNG) && track && atoi(track))
+            ret = strcatf(str, "&gt;"
+                               "&lt;dc:title&gt;%02d - %s&lt;/dc:title&gt;"
+                               "&lt;upnp:class&gt;object.%s&lt;/upnp:class&gt;",
+                               atoi(track), title, class);
+        else
+            ret = strcatf(str, "&gt;"
+                               "&lt;dc:title&gt;%s&lt;/dc:title&gt;"
+                               "&lt;upnp:class&gt;object.%s&lt;/upnp:class&gt;",
+                               title, class);
 		if( comment && (passed_args->filter & FILTER_DC_DESCRIPTION) ) {
 			ret = strcatf(str, "&lt;dc:description&gt;%.384s&lt;/dc:description&gt;", comment);
 		}
